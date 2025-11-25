@@ -40,26 +40,28 @@ if "chat_threads" not in st.session_state:
 
 add_thread(st.session_state["thread_id"])
 
+
+# (This part contains code for sidebar. It can store previous conversations and create new ones like ChatGPT.)
 # ============================ Sidebar ============================
-st.sidebar.title("LangGraph MCP Chatbot")
+# st.sidebar.title("LangGraph MCP Chatbot")
 
-if st.sidebar.button("New Chat"):
-    reset_chat()
+# if st.sidebar.button("New Chat"):
+#     reset_chat()
 
-st.sidebar.header("My Conversations")
-for thread_id in st.session_state["chat_threads"][::-1]:
-    if st.sidebar.button(str(thread_id)):
-        st.session_state["thread_id"] = thread_id
-        messages = load_conversation(thread_id)
+# st.sidebar.header("My Conversations")
+# for thread_id in st.session_state["chat_threads"][::-1]:
+#     if st.sidebar.button(str(thread_id)):
+#         st.session_state["thread_id"] = thread_id
+#         messages = load_conversation(thread_id)
 
-        temp_messages = []
-        for msg in messages:
-            role = "user" if isinstance(msg, HumanMessage) else "assistant"
-            temp_messages.append({"role": role, "content": msg.content})
-        st.session_state["message_history"] = temp_messages
+#         temp_messages = []
+#         for msg in messages:
+#             role = "user" if isinstance(msg, HumanMessage) else "assistant"
+#             temp_messages.append({"role": role, "content": msg.content})
+#         st.session_state["message_history"] = temp_messages
 
 # ============================ Main UI ============================
-
+st.title("Chatbot for Clickup")
 # Render history
 for message in st.session_state["message_history"]:
     with st.chat_message(message["role"]):
