@@ -9,6 +9,7 @@ dependencies = [
     "langchain-cerebras>=0.8.2",
     "langchain-community>=0.4.1",
     "langchain-core>=1.1.0",
+    "langchain-google-genai>=3.2.0",
     "langchain-groq>=1.1.0",
     "langchain-mcp-adapters>=0.1.14",
     "langgraph>=1.0.3",

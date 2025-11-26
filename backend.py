@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, START, END
 from typing import TypedDict, Annotated
-from langchain_core.messages import BaseMessage, HumanMessage 
+from langchain_core.messages import BaseMessage, HumanMessage, SystemMessage 
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode, tools_condition 
@@ -104,6 +104,16 @@ class ChatState(TypedDict):
 async def chat_node(state: ChatState):
     """LLM node that may answer or request a tool call."""
     messages = state["messages"]
+
+    # Add system prompt if this is the first message
+    if not any(isinstance(msg, SystemMessage) for msg in messages):
+        system_prompt = SystemMessage(
+            content="You are a helpful AI assistant with access to ClickUp tools. "
+                    "You can help users manage their tasks, projects, and workflows in ClickUp. "
+                    "You can use the tools as many times as needed to provide effective assistance."
+        )
+        messages = [system_prompt] + messages
+
     response = await llm_with_tools.ainvoke(messages)
     return {"messages": [response]}
 
